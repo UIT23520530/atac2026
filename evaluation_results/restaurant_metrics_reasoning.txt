@@ -1,0 +1,14 @@
+==== REASONING MODEL EVALUATION REPORT: Restaurant ====
+Total Samples: 1119
+Implicit (ISA): 267 | Explicit (ESA): 852
+
+1. Overall:
+   - Acc: 0.8963
+   - F1-Macro: 0.8290
+2. Explicit Subset (ESA):
+   - Acc: 0.9437
+   - F1-Macro: 0.7952
+3. Implicit Subset (ISA):
+   - Acc: 0.7453
+   - F1-Macro: 0.7477
+========================================

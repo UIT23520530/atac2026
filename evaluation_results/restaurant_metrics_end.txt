@@ -1,0 +1,28 @@
+==== CONFIGURATION INFO (UNIFIED _end) ====
+Model: google/gemma-7b (Full BF16)
+LoRA Rank (r): 64
+LoRA Alpha: 128
+LoRA Dropout: 0.1
+Epochs: 4
+Max Seq Length: 1024
+Learning Rate: 0.0002
+Scheduler: cosine
+Batch Size: 8
+========================================
+
+==== EVALUATION REPORT: Restaurant ====
+Total Samples: 1120
+Explicit Samples (ESA): 853
+Implicit Samples (ISA): 267
+
+1. Overall Performance:
+   - Accuracy: 0.8946
+   - F1-Macro: 0.8330
+2. Explicit Subset Performance (ESA):
+   - Accuracy (ESA): 0.9390
+   - F1-Macro (ESA): 0.8049
+3. Implicit Subset Performance (ISA):
+   - Accuracy (ISA): 0.7528
+   - F1-Macro (ISA): 0.7581
+
+========================================

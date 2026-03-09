@@ -1,0 +1,14 @@
+==== REASONING MODEL EVALUATION REPORT: Laptop ====
+Total Samples: 638
+Implicit (ISA): 175 | Explicit (ESA): 463
+
+1. Overall:
+   - Acc: 0.8370
+   - F1-Macro: 0.7974
+2. Explicit Subset (ESA):
+   - Acc: 0.8661
+   - F1-Macro: 0.7237
+3. Implicit Subset (ISA):
+   - Acc: 0.7600
+   - F1-Macro: 0.7479
+========================================
