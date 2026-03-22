@@ -17,6 +17,10 @@ Both approaches use **Gemma 7B** as the base model with **LoRA adapters** for pa
 ```
 ├── ISA_Standard_FineTuning_Gemma.ipynb     # Standard fine-tuning pipeline
 ├── ISA_Reasoning_FineTuning_Gemma.ipynb    # Reasoning-augmented (CoT) fine-tuning pipeline
+├── baselines/                              # Baseline implementations (zero-shot, few-shot, CoT)
+│   ├── run_baseline.py                     # Main baseline runner
+│   ├── run_all_baselines.py                # Batch runner for all experiments
+│   └── prompts.py                          # Prompt templates
 ├── data/
 │   ├── laptop/                             # SemEval-style XML data (Laptop domain)
 │   ├── restaurant/                         # SemEval-style XML data (Restaurant domain)
@@ -91,6 +95,95 @@ The datasets are based on **SemEval 2014 Task 4** (Laptop and Restaurant reviews
 - `is_implicit`: whether the sentiment is expressed implicitly
 
 The `reasoning_augmented/` directory contains the same data enriched with GPT-4o-generated expert analysis.
+
+## Baseline Experiments
+
+We provide three baseline implementations using Azure OpenAI API (GPT-4o) to evaluate different prompting strategies:
+
+### Baseline Methods
+
+1. **Zero-shot**: Simple task instruction without examples
+2. **Few-shot**: Task instruction with 3 domain-specific examples
+3. **Chain-of-Thought (CoT)**: Step-by-step reasoning instruction
+
+### Prerequisites
+
+- Python 3.10+
+- Azure OpenAI API access
+
+### Installation
+
+```bash
+pip install pandas scikit-learn openai
+```
+
+### Configuration
+
+Set the following environment variables:
+
+```bash
+export AZURE_OPENAI_KEY="your_api_key"
+export AZURE_OPENAI_ENDPOINT="https://your-resource.openai.azure.com"
+export AZURE_OPENAI_API_VERSION="2024-05-01-preview"
+```
+
+### Usage
+
+**Run a specific baseline:**
+
+```bash
+python baselines/run_baseline.py \
+    --input ./data/reasoning_augmented/laptop_test_reasoning.csv \
+    --output ./baseline_results/laptop_zero_shot.csv \
+    --prompt-type zero-shot
+```
+
+**Run all three baselines on all datasets:**
+
+```bash
+python baselines/run_all_baselines.py \
+    --data-dir ./data/reasoning_augmented \
+    --output-dir ./baseline_results
+```
+
+### Arguments
+
+**run_baseline.py:**
+- `--input` (required): Path to input CSV with 'text' and 'aspect' columns
+- `--output` (required): Path for output CSV with predictions
+- `--prompt-type` (required): One of `zero-shot`, `few-shot`, `cot`
+- `--model` (optional): Model name (default: `gpt-4o`)
+
+**run_all_baselines.py:**
+- `--data-dir`: Directory with input CSVs (default: `./data/reasoning_augmented`)
+- `--output-dir`: Directory for outputs (default: `./baseline_results`)
+- `--datasets`: CSV files to process
+- `--prompt-types`: Strategies to run
+
+### Output Format
+
+Results are saved as CSV with:
+```
+text, aspect, sentiment, is_implicit, reasoning, predicted_sentiment
+```
+
+### Evaluation Metrics
+
+When ground truth labels are present, the following metrics are displayed:
+- **Accuracy**
+- **F1-score** (macro-averaged)
+
+### Prompt Designs
+
+**Zero-shot:** Simple instruction without examples
+
+**Few-shot:** Instruction with 3 domain-specific examples (different for laptop vs restaurant domains)
+
+**CoT:** Instruction to reason step-by-step:
+1. Analyze text for implicit opinions and pragmatic cues
+2. Consider contextual signals (sarcasm, understatement, contrast)
+3. Infer underlying sentiment toward target
+
 
 ## License
 
